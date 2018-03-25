@@ -166,7 +166,13 @@ public class GemTDBot extends TelegramLongPollingBot {
         if (!goods.equals(previousGoods)) {
             subscribers.forEach(id -> sendTextMessages(id, goods));
             previousGoods = goods;
-            logger.info("Slave sent update to\nSubscribers:\n" + subscribers + "\nServices:\n" + services.keySet() + "\n");
+            List<String> enabledService = new ArrayList<>();
+            for (Map.Entry<String, Service> service : services.entrySet()) {
+                if (service.getValue().isEnabled()) {
+                    enabledService.add(service.getKey());
+                }
+            }
+            logger.info("Slave sent update to\nSubscribers:\n" + subscribers + "\nServices:\n" + enabledService + "\n");
             services.forEach((String name, Service service) -> {
                 if (service.isEnabled()) {
                     service.handleService(goods);
