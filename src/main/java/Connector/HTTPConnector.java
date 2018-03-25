@@ -21,6 +21,8 @@ public class HTTPConnector {
     private static String URL = "http://101.200.189.65:430/gemtd/201803/goods/list/@76561198047094522?hehe=0.2642897393088788";
     private static Integer expire = null;
     private static HashMap<String, String> abilityMap = new HashMap<>();
+    private static HashMap<String, String> herosMap = new HashMap<>();
+    private static HashMap<String, String> effectsMap = new HashMap<>();
 
     static {
         abilityMap.put("a101", "heal");
@@ -50,8 +52,6 @@ public class HTTPConnector {
         abilityMap.put("a402", "Perfect Pray");
         abilityMap.put("a403", "Candy Marker");
     }
-
-    private static HashMap<String, String> herosMap = new HashMap<>();
 
     static {
         herosMap.put("h000", "Riki");
@@ -116,8 +116,6 @@ public class HTTPConnector {
         herosMap.put("h414", "Dark Willow");
     }
 
-    private static HashMap<String, String> effectsMap = new HashMap<>();
-
     static {
         effectsMap.put("e101", "Devine");
         effectsMap.put("e102", "Ruby");
@@ -174,14 +172,14 @@ public class HTTPConnector {
         effectsMap.put("e409", "Bloody");
     }
 
-    public static String getGoods() throws Exception {
+    public static String getGoods() throws IOException {
         String result;
         URL url = new URL(URL);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setReadTimeout(5000);
         connection.setConnectTimeout(5000);
         if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-            throw new Exception("Error, Status not 200. " + connection.getResponseCode() + "\n" + connection.getResponseMessage());
+            throw new IOException("Error, Status not 200. " + connection.getResponseCode() + "\n" + connection.getResponseMessage());
         } else {
             result = getResult(connection.getInputStream());
         }
@@ -189,7 +187,7 @@ public class HTTPConnector {
         return result;
     }
 
-    private static String getResult(InputStream inputStream) {
+    private static String getResult(InputStream inputStream) throws IOException {
         BufferedReader br = null;
         StringBuilder sb = new StringBuilder();
 
@@ -201,15 +199,10 @@ public class HTTPConnector {
                 sb.append(line);
             }
         } catch (IOException e) {
-            e.printStackTrace();
-            return "Format error";
+            throw e;
         } finally {
             if (br != null) {
-                try {
                     br.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
             }
         }
 
