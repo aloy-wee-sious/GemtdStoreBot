@@ -1,0 +1,8 @@
+{
+  "discord_config": {
+    "discord_webhook": "Discord webhook url",
+    "discord_username": "Gemtd store stalker",
+    "discord_avatar": "https://d1u5p3l4wpay3k.cloudfront.net/dota2_gamepedia/thumb/e/e9/GemTD_Icon.png/256px-GemTD_Icon.png.jpeg?version=32a2d5e1828accfef037cb73b46d2e0c",
+    "discord_enable_on_start": "true"
+  }
+}
